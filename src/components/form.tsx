@@ -25,7 +25,7 @@ const Form: React.FC = () => {
   const {
     reset,
     handleSubmit,
-    formState: { isSubmitting, isValid }
+    formState: { isSubmitting }
   } = methods
 
   const onSubmit = handleSubmit(async data => {
@@ -46,7 +46,7 @@ const Form: React.FC = () => {
           onSubmit={onSubmit}
           className="space-y-4 rounded bg-white p-6 shadow-md"
         >
-          <TextField label="name" name="name" type="text" />
+          <TextField label="Name" name="name" type="text" />
           <TextField label="Email" name="email" type="email" />
           <Select
             name="selectedOptions"
@@ -59,7 +59,6 @@ const Form: React.FC = () => {
               <button
                 className="rounded bg-blue-500 p-2 font-bold text-white hover:bg-blue-700"
                 type="submit"
-                disabled={!isValid}
               >
                 Submit
               </button>
