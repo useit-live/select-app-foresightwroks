@@ -36,7 +36,7 @@ const Form: React.FC = () => {
   })
 
   if (isSubmitting) {
-    return <div>Loading...</div>
+    return <div className="text-white">Loading...</div>
   }
 
   return (
@@ -51,7 +51,7 @@ const Form: React.FC = () => {
           <Select
             name="selectedOptions"
             options={options}
-            isMultiple={false}
+            isMultiple={true}
             placeholder="Choose options..."
           />
           <div className="flex items-center justify-between">

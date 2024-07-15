@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Controller, useFormContext } from 'react-hook-form'
+import { Controller, useFormContext, useWatch } from 'react-hook-form'
 import { IOption, ISelectProps } from '@/types'
 import Checkbox from '@/components/checkbox.tsx'
 import { ArrowIcon } from '@/components/ui/icons.tsx'
@@ -11,9 +11,10 @@ const Select: React.FC<ISelectProps> = ({
   placeholder,
   helperText
 }) => {
-  const { control, watch } = useFormContext()
+  const { control } = useFormContext()
   const [isOpen, setIsOpen] = useState(false)
   const [filter, setFilter] = useState('')
+  const selectedOptions = useWatch({ control, name: 'selectedOptions' }) ?? []
 
   const toggleDropdown = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -25,26 +26,18 @@ const Select: React.FC<ISelectProps> = ({
     option.label.toLowerCase().includes(filter.toLowerCase())
   )
 
-  const selectedOptions = watch('selectedOptions')
-
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field: { value, onChange }, fieldState: { error } }) => {
+      render={({ field: { value = [], onChange }, fieldState: { error } }) => {
         const handleOptionClick = (option: IOption) => {
-          if (isMultiple) {
-            if (
-              selectedOptions.find((o: IOption) => o.value === option.value)
-            ) {
-              onChange(
-                selectedOptions.filter((o: IOption) => o.value !== option.value)
-              )
-            } else {
-              onChange([...selectedOptions, option])
-            }
+          if (selectedOptions.find((o: IOption) => o.value === option.value)) {
+            onChange(
+              selectedOptions.filter((o: IOption) => o.value !== option.value)
+            )
           } else {
-            onChange([option])
+            onChange([...selectedOptions, option])
           }
         }
 
@@ -84,6 +77,11 @@ const Select: React.FC<ISelectProps> = ({
                       }
                       checked={value?.length === options.length}
                       onChange={handleSelectAll}
+                      value={
+                        value?.length !== options.length
+                          ? 'Select All'
+                          : 'Deselect All'
+                      }
                     />
                   </div>
                 )}
@@ -97,6 +95,7 @@ const Select: React.FC<ISelectProps> = ({
                           (o: IOption) => o.value === option.value
                         )}
                         onChange={() => handleOptionClick(option)}
+                        value={option.value}
                       />
                     </li>
                   ))}

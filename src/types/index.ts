@@ -13,13 +13,11 @@ export interface ISelectProps {
   helperText?: string
 }
 
-export interface ICheckboxInputProps {
+export interface ICheckboxProps {
+  label: string
+  value: string | number
   checked: boolean
   onChange: () => void
-}
-
-export interface ICheckboxProps extends ICheckboxInputProps {
-  label: string
 }
 
 export interface ITextFieldProps {

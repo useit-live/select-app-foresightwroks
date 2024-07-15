@@ -1,11 +1,16 @@
 import { ICheckboxProps } from '@/types'
-import CheckboxInput from '@/components/checkbox-input.tsx'
 
-const Checkbox = ({ label, checked, onChange }: ICheckboxProps) => {
+const Checkbox = ({ value, label, checked, onChange }: ICheckboxProps) => {
   return (
     <div className="flex flex-row space-x-2">
-      <CheckboxInput checked={checked} onChange={onChange} />
-      <span>{label}</span>
+      <input
+        id={`option-${value}`}
+        type="checkbox"
+        checked={checked}
+        onChange={onChange}
+        aria-label={label}
+      />
+      <label htmlFor={`option-${value}`}>{label}</label>
     </div>
   )
 }
