@@ -31,16 +31,18 @@ const Select: React.FC<ISelectProps> = ({
       control={control}
       render={({ field: { value = [], onChange }, fieldState: { error } }) => {
         const handleOptionClick = (option: IOption) => {
+          const isSelected = selectedOptions.some(
+            (o: IOption) => o.value === option.value
+          )
+
           if (isMultiple) {
-            if (
-              selectedOptions.find((o: IOption) => o.value === option.value)
-            ) {
-              onChange(
-                selectedOptions.filter((o: IOption) => o.value !== option.value)
-              )
-            } else {
-              onChange([...selectedOptions, option])
-            }
+            onChange(
+              isSelected
+                ? selectedOptions.filter(
+                    (o: IOption) => o.value !== option.value
+                  )
+                : [...selectedOptions, option]
+            )
           } else {
             onChange([option])
           }
@@ -90,21 +92,18 @@ const Select: React.FC<ISelectProps> = ({
                     />
                   </div>
                 )}
-                <ul>
-                  {filteredOptions.map(option => (
-                    <li key={option.value}>
-                      <Checkbox
-                        key={option.value}
-                        label={option.label}
-                        checked={value.some(
-                          (o: IOption) => o.value === option.value
-                        )}
-                        onChange={() => handleOptionClick(option)}
-                        value={option.value.toString()}
-                      />
-                    </li>
-                  ))}
-                </ul>
+
+                {filteredOptions.map(option => (
+                  <Checkbox
+                    key={option.value}
+                    label={option.label}
+                    checked={value.some(
+                      (o: IOption) => o.value === option.value
+                    )}
+                    onChange={() => handleOptionClick(option)}
+                    value={option.value.toString()}
+                  />
+                ))}
               </div>
             )}
             {error && <p className="text-red-500">{error.message}</p>}

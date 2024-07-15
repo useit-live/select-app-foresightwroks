@@ -1,5 +1,3 @@
-import { FieldError } from 'react-hook-form'
-
 export interface IOption {
   label: string
   value: number | string
@@ -9,7 +7,7 @@ export interface ISelectProps {
   name: string
   options: IOption[]
   isMultiple?: boolean
-  placeholder?: string
+  placeholder: string
 }
 
 export interface ICheckboxProps {
@@ -22,6 +20,5 @@ export interface ICheckboxProps {
 export interface ITextFieldProps {
   label: string
   name: string
-  helperText?: FieldError
   type: string
 }
