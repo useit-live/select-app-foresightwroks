@@ -25,7 +25,7 @@ const Form: React.FC = () => {
   const {
     reset,
     handleSubmit,
-    formState: { isSubmitting, isValid }
+    formState: { isSubmitting, errors }
   } = methods
 
   const onSubmit = handleSubmit(async data => {
@@ -46,7 +46,7 @@ const Form: React.FC = () => {
           onSubmit={onSubmit}
           className="space-y-4 rounded bg-white p-6 shadow-md"
         >
-          <TextField label="Name" name="name" type="text" />
+          <TextField label="name" name="name" type="text" />
           <TextField label="Email" name="email" type="email" />
           <Select
             name="selectedOptions"
@@ -55,11 +55,17 @@ const Form: React.FC = () => {
             placeholder="Choose options..."
           />
           <div className="flex items-center justify-between">
-            <button className="rounded" type="submit" disabled={!isValid}>
+            <button className="rounded" type="submit">
               Submit
             </button>
           </div>
         </form>
+        {Object.keys(errors).length > 0 && (
+          <div className="mt-4 text-red-500">
+            <p>Errors:</p>
+            <pre>{JSON.stringify(errors, null, 2)}</pre>
+          </div>
+        )}
       </FormProvider>
     </div>
   )
