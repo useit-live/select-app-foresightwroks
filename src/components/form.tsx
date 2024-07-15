@@ -4,8 +4,8 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import TextField from '@/components/text-field.tsx'
 import Select from '@/components/select.tsx'
-import { formSchema, options } from '@/const'
 import { sleep } from '@/lib/utils.ts'
+import { formSchema, options } from '@/const'
 
 const Form: React.FC = () => {
   const defaultValues = useMemo(
@@ -25,7 +25,7 @@ const Form: React.FC = () => {
   const {
     reset,
     handleSubmit,
-    formState: { isSubmitting, errors }
+    formState: { isSubmitting, isValid }
   } = methods
 
   const onSubmit = handleSubmit(async data => {
@@ -54,18 +54,27 @@ const Form: React.FC = () => {
             isMultiple={true}
             placeholder="Choose options..."
           />
-          <div className="flex items-center justify-between">
-            <button className="rounded" type="submit">
-              Submit
-            </button>
+          <div className="flex w-full flex-row justify-between">
+            <div className=" items-center justify-between">
+              <button
+                className="rounded bg-blue-500 p-2 font-bold text-white hover:bg-blue-700"
+                type="submit"
+                disabled={!isValid}
+              >
+                Submit
+              </button>
+            </div>
+            <div className="flex items-center justify-between">
+              <button
+                className="text-red-800"
+                onClick={() => reset()}
+                disabled={isSubmitting}
+              >
+                Clear form
+              </button>
+            </div>
           </div>
         </form>
-        {Object.keys(errors).length > 0 && (
-          <div className="mt-4 text-red-500">
-            <p>Errors:</p>
-            <pre>{JSON.stringify(errors, null, 2)}</pre>
-          </div>
-        )}
       </FormProvider>
     </div>
   )
