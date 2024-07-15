@@ -10,7 +10,6 @@ export interface ISelectProps {
   options: IOption[]
   isMultiple?: boolean
   placeholder?: string
-  helperText?: string
 }
 
 export interface ICheckboxProps {

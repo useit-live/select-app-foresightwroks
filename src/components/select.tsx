@@ -8,8 +8,7 @@ const Select: React.FC<ISelectProps> = ({
   name,
   options,
   isMultiple = false,
-  placeholder,
-  helperText
+  placeholder
 }) => {
   const { control } = useFormContext()
   const [isOpen, setIsOpen] = useState(false)
@@ -31,6 +30,7 @@ const Select: React.FC<ISelectProps> = ({
       name={name}
       control={control}
       render={({ field: { value = [], onChange }, fieldState: { error } }) => {
+        console.log(error)
         const handleOptionClick = (option: IOption) => {
           if (selectedOptions.find((o: IOption) => o.value === option.value)) {
             onChange(
@@ -102,7 +102,6 @@ const Select: React.FC<ISelectProps> = ({
                 </ul>
               </div>
             )}
-            {helperText && <p>{helperText}</p>}
             {error && <p>{error.message}</p>}
           </div>
         )

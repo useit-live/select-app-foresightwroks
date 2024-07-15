@@ -55,11 +55,7 @@ const Form: React.FC = () => {
             placeholder="Choose options..."
           />
           <div className="flex items-center justify-between">
-            <button
-              className="rounded bg-blue-500 p-2 font-bold text-white hover:bg-blue-700"
-              type="submit"
-              disabled={!isValid}
-            >
+            <button className="rounded" type="submit" disabled={!isValid}>
               Submit
             </button>
           </div>
