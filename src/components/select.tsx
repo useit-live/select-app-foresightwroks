@@ -10,7 +10,7 @@ const Select: React.FC<ISelectProps> = ({
   isMultiple = false,
   placeholder
 }) => {
-  const { control } = useFormContext()
+  const { control, resetField } = useFormContext()
   const [isOpen, setIsOpen] = useState(false)
   const [filter, setFilter] = useState('')
   const selectedOptions = useWatch({ control, name }) ?? []
@@ -25,37 +25,31 @@ const Select: React.FC<ISelectProps> = ({
     option.label.toLowerCase().includes(filter.toLowerCase())
   )
 
+  const handleOptionClick = (
+    option: IOption,
+    onChange: (arg0: IOption[]) => void
+  ) => {
+    const isSelected = selectedOptions.some(
+      (o: IOption) => o.value === option.value
+    )
+
+    if (isMultiple) {
+      onChange(
+        isSelected
+          ? selectedOptions.filter((o: IOption) => o.value !== option.value)
+          : [...selectedOptions, option]
+      )
+    } else {
+      onChange([option])
+    }
+  }
+
   return (
     <Controller
       name={name}
       control={control}
       render={({ field: { value = [], onChange }, fieldState: { error } }) => {
-        const handleOptionClick = (option: IOption) => {
-          const isSelected = selectedOptions.some(
-            (o: IOption) => o.value === option.value
-          )
-
-          if (isMultiple) {
-            onChange(
-              isSelected
-                ? selectedOptions.filter(
-                    (o: IOption) => o.value !== option.value
-                  )
-                : [...selectedOptions, option]
-            )
-          } else {
-            onChange([option])
-          }
-        }
-
-        const handleSelectAll = () => {
-          if (value?.length === options.length) {
-            onChange([])
-          } else {
-            onChange(options)
-          }
-        }
-
+        const text = value.length !== options.length ? 'Select All' : 'Deselect All'
         return (
           <div className="flex flex-col items-center">
             <button
@@ -75,20 +69,16 @@ const Select: React.FC<ISelectProps> = ({
                   value={filter}
                 />
                 {isMultiple && (
-                  <div className="flex space-x-2">
+                  <div className="flex space-x-2 ">
                     <Checkbox
-                      label={
-                        value.length !== options.length
-                          ? 'Select All'
-                          : 'Deselect All'
-                      }
+                      label={text}
                       checked={value.length === options.length}
-                      onChange={handleSelectAll}
-                      value={
-                        value.length !== options.length
-                          ? 'Select All'
-                          : 'Deselect All'
+                      onChange={() =>
+                        value.length === options.length
+                          ? resetField(name)
+                          : onChange(options)
                       }
+                      value={text}
                     />
                   </div>
                 )}
@@ -100,8 +90,8 @@ const Select: React.FC<ISelectProps> = ({
                     checked={value.some(
                       (o: IOption) => o.value === option.value
                     )}
-                    onChange={() => handleOptionClick(option)}
-                    value={option.value.toString()}
+                    onChange={() => handleOptionClick(option, onChange)}
+                    value={option.value}
                   />
                 ))}
               </div>

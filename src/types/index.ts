@@ -1,3 +1,5 @@
+import { ChangeEventHandler } from 'react'
+
 export interface IOption {
   label: string
   value: number | string
@@ -14,7 +16,7 @@ export interface ICheckboxProps {
   label: string
   value: string | number
   checked: boolean
-  onChange: () => void
+  onChange: ChangeEventHandler<HTMLInputElement> | undefined
 }
 
 export interface ITextFieldProps {
